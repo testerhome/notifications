@@ -14,6 +14,10 @@ module Notifications
       redirect_to notifications_path
     end
 
+    def group_by_type
+      self.index
+    end
+
     private
 
     def notifications
