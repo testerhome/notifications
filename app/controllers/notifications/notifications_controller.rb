@@ -14,6 +14,10 @@ module Notifications
       redirect_to notifications_path
     end
 
+    def group_by_type
+      self.index
+    end
+
     private
       def notifications
         raise "You need reqiure user login for /notifications page." unless current_user
