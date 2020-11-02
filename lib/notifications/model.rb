@@ -2,7 +2,7 @@ module Notifications
   module Model
     extend ActiveSupport::Concern
 
-    DEFAULT_AVATAR = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwCAMAAAAJixmgAAAAFVBMVEWkpKSnp6eqqqq3t7fS0tLV1dXZ2dmshcKEAAAAtklEQVR4Ae3XsRGAAAjAQFRk/5HtqaTz5H+DlInvAQAAAAAAAAAAAAAAAAAAAACymiveO6o7BQsWLFiwYMGCBS8PFixYsGDBggULFixYsGDBggULFixYsGDBggULFixYsGDBc4IFCxYsWLBgwYIFC14ZfOeAPRQ8IliwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQv+JQAAAAAAAAAAAAAAAAAAAOAB4KJfdHmj+kwAAAAASUVORK5CYII='
+    DEFAULT_AVATAR = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwCAMAAAAJixmgAAAAFVBMVEWkpKSnp6eqqqq3t7fS0tLV1dXZ2dmshcKEAAAAtklEQVR4Ae3XsRGAAAjAQFRk/5HtqaTz5H+DlInvAQAAAAAAAAAAAAAAAAAAAACymiveO6o7BQsWLFiwYMGCBS8PFixYsGDBggULFixYsGDBggULFixYsGDBggULFixYsGDBc4IFCxYsWLBgwYIFC14ZfOeAPRQ8IliwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQsWLFiwYMGCBQv+JQAAAAAAAAAAAAAAAAAAAOAB4KJfdHmj+kwAAAAASUVORK5CYII="
 
     included do
       belongs_to :actor, class_name: Notifications.config.user_class, optional: true
@@ -13,6 +13,7 @@ module Notifications
       belongs_to :third_target, polymorphic: true, optional: true
 
       scope :unread, -> { where(read_at: nil) }
+      scope :read, -> { where.not(read_at: nil) }
     end
 
     def read?
@@ -20,7 +21,7 @@ module Notifications
     end
 
     def actor_name
-      return '' if self.actor.blank?
+      return "" if self.actor.blank?
       self.actor.send(Notifications.config.user_name_method)
     end
 
@@ -37,13 +38,17 @@ module Notifications
     end
 
     module ClassMethods
-      def read!(ids = [])
+      def read!(user, ids = [])
         return if ids.blank?
-        Notification.where(id: ids).update_all(read_at: Time.now)
+        Notification.where(user: user, id: ids).update_all(read_at: Time.now)
       end
 
       def unread_count(user)
         Notification.where(user: user).unread.count
+      end
+
+      def read_count(user)
+        Notification.where(user: user).read.count
       end
     end
   end

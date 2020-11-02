@@ -10,9 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328070302) do
+ActiveRecord::Schema.define(version: 2016_03_28_070302) do
 
-  create_table "comments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "comments", id: :serial, force: :cascade do |t|
     t.integer "topic_id"
     t.integer "user_id"
     t.string "body"
@@ -20,16 +23,16 @@ ActiveRecord::Schema.define(version: 20160328070302) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "user_id", null: false
-    t.integer "actor_id"
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "actor_id"
     t.string "notify_type", null: false
     t.string "target_type"
-    t.integer "target_id"
+    t.bigint "target_id"
     t.string "second_target_type"
-    t.integer "second_target_id"
+    t.bigint "second_target_id"
     t.string "third_target_type"
-    t.integer "third_target_id"
+    t.bigint "third_target_id"
     t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -37,14 +40,14 @@ ActiveRecord::Schema.define(version: 20160328070302) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "topics", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "topics", id: :serial, force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
