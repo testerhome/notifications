@@ -2,7 +2,7 @@
 
 Mountable notifications for any Rails applications.
 
-[![Gem Version](https://badge.fury.io/rb/notifications.svg)](https://badge.fury.io/rb/notifications) [![Build Status](https://travis-ci.org/rails-engine/notifications.svg)](https://travis-ci.org/rails-engine/notifications) [![Code Climate](https://codeclimate.com/github/rails-engine/notifications/badges/gpa.svg)](https://codeclimate.com/github/rails-engine/notifications) [![codecov.io](https://codecov.io/github/rails-engine/notifications/coverage.svg?branch=master)](https://codecov.io/github/rails-engine/notifications?branch=master) [![](http://inch-ci.org/github/rails-engine/notifications.svg?branch=master)](http://inch-ci.org/github/rails-engine/notifications?branch=master)
+[![Gem Version](https://badge.fury.io/rb/notifications.svg)](https://badge.fury.io/rb/notifications) [![Build Status](https://travis-ci.org/rails-engine/notifications.svg)](https://travis-ci.org/rails-engine/notifications) [![codecov.io](https://codecov.io/github/rails-engine/notifications/coverage.svg?branch=master)](https://codecov.io/github/rails-engine/notifications?branch=master)
 
 ## Example:
 
@@ -10,14 +10,9 @@ Mountable notifications for any Rails applications.
 
 ## Installation
 
-```ruby
-# Gemfile Rails ~> 5
-gem 'notifications', '~> 0.6.0'
-# Gemfile for Rails ~> 4.2
-gem 'notifications', '~> 0.5.0'
+```bash
+$ bundle add notifications
 ```
-
-And then run `bundle install`.
 
 You now have a notifications generator in your Rails application:
 
@@ -61,7 +56,43 @@ end
 Get unread notifications count for a user:
 
 ```rb
-count = Notification.unread_count(current_user)
+# unread count
+unread_count = Notification.unread_count(current_user)
+
+# read count
+read_count = Notification.read_count(current_user)
+
+```
+
+```rb initialize/**.rb
+# for non-user class
+Notifications.config.user_class = 'Member'
+
+#or change
+
+Notifications.configure do
+  # Class name of you User model, default: 'User'
+  self.user_class = 'User'
+
+  # Method of user name in User model, default: 'name'
+  # self.user_name_method = 'name'
+
+  # Method of user avatar in User model, default: nil
+  # self.user_avatar_url_method = nil
+
+  # Method name of user profile page path, in User model, default: nil
+  # self.user_profile_url_method = 'profile_url'
+
+  # authenticate_user method in your Controller, default: nil
+  # If you use Devise, authenticate_user! is correct
+  # self.authenticate_user_method = 'authenticate_user!'
+
+  # current_user method name in your Controller, default: 'current_user'
+  # If you use Devise, current_user is correct
+  # self.current_user_method = 'current_user'
+end
+
+
 ```
 
 ### Write your custom Notification partial view for notify_types:

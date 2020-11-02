@@ -1,14 +1,40 @@
+1.1.0
+-----
+
+- BreakChange `Notificaiton.read!` method now required user argument.
+
+```rb
+Notificaiton.read!(current_user, params[:ids])
+```
+
+- Add `POST /notifications/read` API for markup ids as read.
+
+```
+POST /notifications/read { ids: [] }
+```
+
+1.0.0
+-----
+
+- Require Rails >= 5.2.
+- Fix primary key for use `bigint` column type.
+
+0.6.1
+-----
+
+- Dependency Rails >= 5;
+
 0.6.0
 -----
 
-- Dependency Rails ~> 5
+- Dependency Rails ~> 5;
 
 -----------
 
 0.5.0
 -----
 
-- Dependency Rails ~> 4.2
+- Dependency Rails ~> 4.2;
 
 ----------------------
 

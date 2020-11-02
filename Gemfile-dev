@@ -3,9 +3,10 @@ gem 'uglifier'
 gem 'coffee-rails'
 gem 'devise'
 gem 'jquery-rails'
-gem 'mysql2'
+gem 'pg'
 gem 'puma'
-gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap'
+gem 'sprockets'
 
 group :development, :test do
   gem 'minitest'
